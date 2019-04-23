@@ -13,6 +13,7 @@ import pl.patlec.utils.Mailer;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -42,6 +43,9 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     @Transactional
     public void registerUser(UserDto userDto) throws MessagingException, IOException, DocumentException {
