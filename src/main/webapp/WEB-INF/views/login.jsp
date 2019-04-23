@@ -16,7 +16,13 @@
                     <h1 class="text-color-darker">Login panel</h1>
                     <div class="form-group">
                         <c:if test="${param.error}">
-                            ${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}
+                            <br><span class="error">${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}</span>
+                        </c:if>
+                        <c:if test="${param.registered}">
+                            <br><span class="error">You have been registered. Please activate your account.</span>
+                        </c:if>
+                        <c:if test="${param.activated}">
+                            <br><span class="error">Account has been activated.</span>
                         </c:if>
                         <input type="text" class="form-control" id="email" name="email" placeholder="E-mail address">
                     </div>
