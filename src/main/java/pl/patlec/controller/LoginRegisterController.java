@@ -39,7 +39,7 @@ public class LoginRegisterController {
                 userDto.getPassword().length() >= 8) {
 
             userService.registerUser(userDto);
-            return "redirect:/login";
+            return "redirect:/login?registered=true";
         }
 
         System.out.println(userService.findUserByEmail(userDto.getEmail()) != null);
@@ -66,7 +66,7 @@ public class LoginRegisterController {
             }
         }
 
-        return "redirect:/login";
+        return "redirect:/login?activated=true";
     }
     @GetMapping("/login")
     public String loginPanel(){
@@ -76,7 +76,6 @@ public class LoginRegisterController {
         if (auth instanceof AnonymousAuthenticationToken)
             return "login";
 
-        return "/";
-        //return "redirect:/user/dashboard";
+        return "redirect:/user/dashboard";
     }
 }
