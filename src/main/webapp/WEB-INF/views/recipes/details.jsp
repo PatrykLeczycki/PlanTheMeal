@@ -21,22 +21,24 @@
                         <div class="col d-flex justify-content-end mb-2"><a href="${pageContext.request.contextPath}/recipe/all" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Back</a></div>
                     </div>
 
-                    <table class="table borderless">
+                    <table style="border-collapse: separate; border-spacing: 10px;">
                         <tbody>
-                        <tr class="d-flex">
-                            <th scope="row" class="col-2">Name</th>
-                            <td class="col-7">
-                                ${recipe.name}
+                        <tr>
+                            <td><p>Name</p></td>
+                            <td>
+                                <p>${recipe.name}</p>
                             </td>
                         </tr>
-                        <tr class="d-flex">
-                            <th scope="row" class="col-2">Description</th>
-                            <td class="col-7">${recipe.description}</td>
+                        <tr>
+                            <td><p>Description</p></td>
+                            <td>
+                                <p>${recipe.description}</p>
+                            </td>
                         </tr>
-                        <tr class="d-flex">
-                            <th scope="row" class="col-2">Preparation time (min)</th>
-                            <td class="col-7">
-                                ${recipe.preparationTime}
+                        <tr>
+                            <td><p>Preparation time (min)</p></td>
+                            <td>
+                                <p>${recipe.preparationTime}</p>
                             </td>
                         </tr>
                         </tbody>
@@ -49,12 +51,14 @@
                     </div>
                     <div class="row d-flex">
                         <div class="col-5 p-4">
-                            <p>${recipe.preparation}</p>
+                            <c:forEach items="${steps}" var="step">
+                            <p>${step}</p>
+                        </c:forEach>
                         </div>
                         <div class="col-2"></div>
                         <div class="col-5 p-4">
                             <c:forEach items="${ingredients}" var="ingredient">
-                                ${ingredient}<br>
+                                <p>${ingredient}</p>
                             </c:forEach>
                         </div>
                         <%--<ul class="col-5 p-4 list-unstyled">

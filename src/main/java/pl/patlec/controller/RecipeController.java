@@ -35,16 +35,9 @@ public class RecipeController {
     public String recipeDetails(@PathVariable long id, Model model){
 
         model.addAttribute("recipe", recipeService.findById(id));
+        model.addAttribute("ingredients", stringToList(recipeService.findById(id).getIngredients()));
+        model.addAttribute("steps", stringToList(recipeService.findById(id).getPreparation()));
 
-        String[] ings = recipeService.findById(id).getIngredients().split(", ");
-
-        List<String> ingredients = new ArrayList<>(Arrays.asList(ings));
-
-        System.out.println("details");
-        for (String x : ingredients)
-            System.out.println(x);
-
-        model.addAttribute("ingredients", ingredients);
         return "recipes/details";
     }
 
@@ -60,8 +53,9 @@ public class RecipeController {
         recipe.setAuthor(userService.findUserByEmail(principal.getName()));
 
         String[] ings = request.getParameterValues("ingredient");
+        String[] steps = request.getParameterValues("step");
 
-        String ingredients = "";
+        String ingredients = "", preparationSteps = "";
 
         for (int i = 0; i < ings.length; i++){
             ingredients += ings[i];
@@ -69,8 +63,14 @@ public class RecipeController {
                 ingredients += ", ";
         }
 
-        System.out.println(ingredients);
+        for (int i = 0; i < steps.length; i++){
+            preparationSteps += steps[i];
+            if (i != steps.length - 1)
+                preparationSteps += ", ";
+        }
+
         recipe.setIngredients(ingredients);
+        recipe.setPreparation(preparationSteps);
 
         recipeService.add(recipe);
         return "redirect:/recipe/all";
@@ -78,26 +78,38 @@ public class RecipeController {
 
     @GetMapping("/edit/{id}")
     private String editRecipe(@PathVariable long id, Model model){
+
         model.addAttribute("recipe", recipeService.findById(id));
+        model.addAttribute("ingredients", stringToList(recipeService.findById(id).getIngredients()));
+        model.addAttribute("steps", stringToList(recipeService.findById(id).getPreparation()));
 
-        String[] ings = recipeService.findById(id).getIngredients().split(", ");
-
-        List<String> ingredients = new ArrayList<>(Arrays.asList(ings));
-
-        System.out.println("edit");
-        for (String x : ingredients)
-            System.out.println(x);
-
-        model.addAttribute("ingredients", ingredients);
 
         return "recipes/edit";
     }
 
     @PostMapping("/edit")
-    private String editRecipe(@ModelAttribute Recipe recipe){
+    private String editRecipe(@ModelAttribute Recipe recipe, HttpServletRequest request){
+
+        String[] ings = request.getParameterValues("ingredient");
+        String[] steps = request.getParameterValues("step");
+
+        for (String xx : steps)
+            System.out.println(xx);
+
+        System.out.println("-=-====");
+
+        for (String x : ings)
+            System.out.println(x);
+
 
         recipeService.add(recipe);
         return "redirect:/recipe/all";
+    }
+
+    List<String> stringToList(String string){
+
+        String[] strings = string.split(", ");
+        return new ArrayList<>(Arrays.asList(strings));
     }
 
 }
