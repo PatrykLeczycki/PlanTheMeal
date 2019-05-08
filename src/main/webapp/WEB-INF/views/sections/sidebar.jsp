@@ -8,7 +8,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/recipe/all">
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/recipe/all">
             <span>Recipes</span>
             <i class="fas fa-angle-right"></i>
         </a>
