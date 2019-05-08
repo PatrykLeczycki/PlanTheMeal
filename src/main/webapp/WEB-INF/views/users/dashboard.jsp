@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: patryk
-  Date: 21.04.19
-  Time: 14:29
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,7 +5,7 @@
     <%@include file="../utils/files.jsp"%>
 </head>
 <body>
-<%@include file="../sections/header.jsp"%>
+<%@include file="../sections/header/header.jsp"%>
 
 
 <section class="dashboard-section">
@@ -25,19 +18,19 @@
                     <div class="menu-item border-dashed">
                         <a href="">
                             <i class="far fa-plus-square icon-plus-square"></i>
-                            <span class="title">dodaj przepis</span>
+                            <span class="title">add recipe</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
                         <a href="">
                             <i class="far fa-plus-square icon-plus-square"></i>
-                            <span class="title">dodaj plan</span>
+                            <span class="title">add plan</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
                         <a href="">
                             <i class="far fa-plus-square icon-plus-square"></i>
-                            <span class="title">dodaj przepis do planu</span>
+                            <span class="title">add recipe to plan</span>
                         </a>
                     </div>
                 </div>
@@ -45,11 +38,11 @@
                 <div class="dashboard-alerts">
                     <div class="alert-item alert-info">
                         <i class="fas icon-circle fa-info-circle"></i>
-                        <span class="font-weight-bold">Liczba przepisów: 1</span>
+                        <span class="font-weight-bold">Added recipes: ${recipes}</span>
                     </div>
                     <div class="alert-item alert-light">
                         <i class="far icon-calendar fa-calendar-alt"></i>
-                        <span class="font-weight-bold">Liczba planów: 1</span>
+                        <span class="font-weight-bold">Added plans: 1</span>
                     </div>
                 </div>
             </div>
