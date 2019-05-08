@@ -30,7 +30,7 @@ public class Recipe {
     private LocalDateTime updated;
 
     @NotNull
-    private int preparationTime;
+    private Integer preparationTime;
 
     @NotNull
     private String preparation;
