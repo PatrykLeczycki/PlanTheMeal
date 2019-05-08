@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<%@include file="sections/header.jsp"%>
+<%@include file="sections/header/header.jsp"%>
 
 <section class="dashboard-section">
     <div class="container pt-4 pb-4">
