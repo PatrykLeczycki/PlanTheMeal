@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<%@include file="sections/header.jsp"%>
+<%@include file="sections/header/header.jsp"%>
 
 <section class="padding-large bg-light">
     <div id="carouselExampleControls" class="carousel slide main-slider" data-ride="carousel">
