@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.patlec.model.User;
+import pl.patlec.service.RecipeService;
 import pl.patlec.service.UserService;
 
 import java.security.Principal;
@@ -19,12 +20,14 @@ import java.security.Principal;
 public class UserController {
 
     private final UserService userService;
+    private final RecipeService recipeService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/dashboard")
-    public String dashboard(Principal principal){
-        System.out.println(principal.getName());
+    public String dashboard(Model model, Principal principal){
+
+        model.addAttribute("recipes", recipeService.countByUser(userService.findUserByEmail(principal.getName())));
         return "users/dashboard";
     }
 
@@ -39,12 +42,12 @@ public class UserController {
         User loggedUser = userService.findUserByEmail(principal.getName());
 
         if (!passwordEncoder.matches(oldPassword, loggedUser.getPassword())){
-            model.addAttribute("oldwrong", "Old password doesn't match.");
+            model.addAttribute("oldwrong", true);
             return "users/newpassword";
         }
 
         if (!newPassword.equals(newPasswordRepeat)){
-            model.addAttribute("passnoteq", "Passwords don't match.");
+            model.addAttribute("passnoteq", true);
             return "users/newpassword";
         }
 
