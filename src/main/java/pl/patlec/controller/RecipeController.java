@@ -3,26 +3,25 @@ package pl.patlec.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.patlec.dto.RecipeDto;
 import pl.patlec.model.Recipe;
 import pl.patlec.service.RecipeService;
-import pl.patlec.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@RequestMapping("/recipe")
+@RequestMapping("/user/recipe")
 @RequiredArgsConstructor
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final UserService userService;
 
     @GetMapping("/all")
     public String allRecipes(Model model){
@@ -43,41 +42,37 @@ public class RecipeController {
 
     @GetMapping("/add")
     public String add(Model model){
-        model.addAttribute("recipe", new Recipe());
+        model.addAttribute("recipeDto", new RecipeDto());
         return "recipes/add";
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("recipe") Recipe recipe, HttpServletRequest request, Principal principal){
-        recipe.setCreated(LocalDateTime.now());
-        recipe.setAuthor(userService.findUserByEmail(principal.getName()));
+    public String add(@ModelAttribute("recipeDto") @Valid RecipeDto recipeDto, BindingResult result, HttpServletRequest request, Principal principal, Model model){
 
-        String[] ings = request.getParameterValues("ingredient");
-        String[] steps = request.getParameterValues("step");
+        String[] data = getDataFromRequest(request);
+        recipeDto.setPreparation(data[0]);
+        recipeDto.setIngredients(data[1]);
 
-        String ingredients = "", preparationSteps = "";
+        if(result.hasErrors() || "".equals(recipeDto.getPreparation()) || "".equals(recipeDto.getIngredients())){
 
-        for (int i = 0; i < ings.length; i++){
-            ingredients += ings[i];
-            if (i != ings.length - 1)
-                ingredients += ", ";
+            if("".equals(recipeDto.getPreparation()))
+                model.addAttribute("nopreparation", true);
+
+            if("".equals(recipeDto.getIngredients()))
+                model.addAttribute("noingredients", true);
+
+            model.addAttribute("steps", stringToList(recipeDto.getPreparation()));
+            model.addAttribute("ingredients", stringToList(recipeDto.getIngredients()));
+
+            return "recipes/add";
         }
 
-        for (int i = 0; i < steps.length; i++){
-            preparationSteps += steps[i];
-            if (i != steps.length - 1)
-                preparationSteps += ", ";
-        }
-
-        recipe.setIngredients(ingredients);
-        recipe.setPreparation(preparationSteps);
-
-        recipeService.add(recipe);
-        return "redirect:/recipe/all";
+        recipeService.add(recipeDto, principal);
+        return "redirect:/user/recipe/all";
     }
 
     @GetMapping("/edit/{id}")
-    private String editRecipe(@PathVariable long id, Model model){
+    private String edit(@PathVariable long id, Model model){
 
         model.addAttribute("recipe", recipeService.findById(id));
         model.addAttribute("ingredients", stringToList(recipeService.findById(id).getIngredients()));
@@ -88,28 +83,63 @@ public class RecipeController {
     }
 
     @PostMapping("/edit")
-    private String editRecipe(@ModelAttribute Recipe recipe, HttpServletRequest request){
+    private String edit(@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult result, HttpServletRequest request, Model model, Principal principal){
 
-        String[] ings = request.getParameterValues("ingredient");
-        String[] steps = request.getParameterValues("step");
+        String[] data = getDataFromRequest(request);
+        recipe.setPreparation(data[0]);
+        recipe.setIngredients(data[1]);
 
-        for (String xx : steps)
-            System.out.println(xx);
+        if(result.hasErrors() || "".equals(recipe.getPreparation()) || "".equals(recipe.getIngredients())){
 
-        System.out.println("-=-====");
+            if("".equals(recipe.getPreparation())){
+                model.addAttribute("nopreparation", true);
+                System.out.println("1");
+            }
 
-        for (String x : ings)
-            System.out.println(x);
+            if("".equals(recipe.getIngredients())){
+                model.addAttribute("noingredients", true);
+                System.out.println("2");
+            }
 
+            model.addAttribute("steps", stringToList(recipe.getPreparation()));
+            model.addAttribute("ingredients", stringToList(recipe.getIngredients()));
 
-        recipeService.add(recipe);
-        return "redirect:/recipe/all";
+            return "recipes/edit";
+        }
+
+        recipeService.edit(recipe, principal);
+        return "redirect:/user/recipe/all";
     }
 
-    List<String> stringToList(String string){
+    public List<String> stringToList(String string){
 
         String[] strings = string.split(", ");
         return new ArrayList<>(Arrays.asList(strings));
+    }
+
+    public String[] getDataFromRequest(HttpServletRequest request){
+        String[] steps = request.getParameterValues("step");
+        String[] ings = request.getParameterValues("ingredient");
+
+        String preparationSteps = "", ingredients = "";
+
+        if (steps.length > 0){
+            for (int i = 0; i < steps.length; i++){
+                preparationSteps += steps[i];
+                if (i != steps.length - 1)
+                    preparationSteps += ", ";
+            }
+        }
+
+        if(ings.length > 0){
+            for (int i = 0; i < ings.length; i++){
+                ingredients += ings[i];
+                if (i != ings.length - 1)
+                    ingredients += ", ";
+            }
+        }
+
+        return new String[]{preparationSteps, ingredients};
     }
 
 }
