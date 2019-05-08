@@ -1,9 +1,14 @@
 
+.error{
+  color: red;
+}
+
 .notice {
   position: fixed;
   /*width: 100px;
   height: 20px;*/
   background: white;
+  color: black;
   border: 1px dashed #ccc;
   text-align: center;
   font-size: 14px;
