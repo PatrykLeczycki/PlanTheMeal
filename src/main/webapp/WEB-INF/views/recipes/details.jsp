@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<%@ include file="../sections/header.jsp"%>
+<%@ include file="../sections/header/header.jsp"%>
 
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
@@ -18,7 +18,7 @@
                 <div class="mt-4 ml-4 mr-4">
                     <div class="row border-bottom border-3">
                         <div class="col"><h3 class="color-header text-uppercase">Recipe details</h3></div>
-                        <div class="col d-flex justify-content-end mb-2"><a href="${pageContext.request.contextPath}/recipe/all" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Back</a></div>
+                        <div class="col d-flex justify-content-end mb-2"><a href="${pageContext.request.contextPath}/user/recipe/all" class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Back</a></div>
                     </div>
 
                     <table style="border-collapse: separate; border-spacing: 10px;">
