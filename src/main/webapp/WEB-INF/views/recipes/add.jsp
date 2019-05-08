@@ -12,7 +12,7 @@
     <div class="row dashboard-nowrap">
         <%@include file="../sections/sidebar.jsp"%>
 
-        <form:form action="/app/recipe/add" method="post" modelAttribute="recipeDto">
+        <form:form action="/user/recipe/add" method="post" modelAttribute="recipeDto">
             <%@include file="addform.jsp"%>
         </form:form>
 
