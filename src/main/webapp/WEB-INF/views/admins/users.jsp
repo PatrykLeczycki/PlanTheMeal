@@ -18,7 +18,7 @@
 
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
-        <%@include file="../sections/header/sidebar.jsp"%>
+        <%@include file="../sections/sidebar.jsp"%>
 
     <div class="m-4 p-3 width-medium">
         <div class="m-4 p-3 border-dashed view-height">
