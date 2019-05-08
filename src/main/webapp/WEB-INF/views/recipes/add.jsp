@@ -6,13 +6,13 @@
     <%@include file="../utils/files.jsp"%>
 </head>
 <body>
-<%@include file="../sections/header.jsp"%>
+<%@include file="../sections/header/header.jsp"%>
 
 <section class="dashboard-section">
     <div class="row dashboard-nowrap">
         <%@include file="../sections/sidebar.jsp"%>
 
-        <form:form action="/recipe/add" method="post" modelAttribute="recipe">
+        <form:form action="/app/recipe/add" method="post" modelAttribute="recipeDto">
             <%@include file="addform.jsp"%>
         </form:form>
 
@@ -20,7 +20,7 @@
 </section>
 
 
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/recipescripts.js"></script>
 <%@include file="../sections/footer.jsp"%>
 
 <%@include file="../utils/scripts.jsp"%>
