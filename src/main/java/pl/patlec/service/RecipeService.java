@@ -2,9 +2,13 @@ package pl.patlec.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.patlec.dto.RecipeDto;
 import pl.patlec.model.Recipe;
+import pl.patlec.model.User;
 import pl.patlec.repo.RecipeRepository;
 
+import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +17,7 @@ import java.util.Optional;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final UserService userService;
 
     public List<Recipe> all(){
         return recipeRepository.findAll();
@@ -25,8 +30,33 @@ public class RecipeService {
         return optionalRecipe.orElse(null);
     }
 
-    public void add(Recipe recipe){
+    public Long countByUser(User user){
+        return recipeRepository.countAllByAuthor(user);
+    }
+
+    public void add(RecipeDto recipeDto, Principal principal){
+
+        Recipe recipe = new Recipe();
+
+        recipe.setPreparationTime(recipeDto.getPreparationTime());
+        recipe.setPreparation(recipeDto.getPreparation());
+        recipe.setName(recipeDto.getName());
+        recipe.setIngredients(recipeDto.getIngredients());
+        recipe.setDescription(recipeDto.getDescription());
+        recipe.setCreated(LocalDateTime.now());
+        recipe.setAuthor(userService.findUserByEmail(principal.getName()));
+
         recipeRepository.save(recipe);
+
+    }
+
+    public void edit(Recipe recipe, Principal principal){
+
+        recipe.setUpdated(LocalDateTime.now());
+        recipe.setAuthor(userService.findUserByEmail(principal.getName()));
+
+        recipeRepository.save(recipe);
+
     }
 
 }
