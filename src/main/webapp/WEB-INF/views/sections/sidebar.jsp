@@ -14,14 +14,14 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/app-schedules.html">
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/plan/all">
             <span>Plans</span>
             <i class="fas fa-angle-right"></i>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/app-edit-user-data.html">
-            <span>Edit credentials</span>
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/editdata">
+            <span>Edit data</span>
             <i class="fas fa-angle-right"></i>
         </a>
     </li>
