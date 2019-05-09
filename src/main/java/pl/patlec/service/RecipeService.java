@@ -3,6 +3,7 @@ package pl.patlec.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.patlec.dto.RecipeDto;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.Recipe;
 import pl.patlec.model.User;
 import pl.patlec.repo.RecipeRepository;
@@ -18,12 +19,14 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final UserService userService;
+    private final MealService mealService;
+    private final Prompt prompt;
 
     public List<Recipe> all(){
         return recipeRepository.findAll();
     }
 
-    public Recipe findById(Long id){
+    public Recipe getById(Long id){
 
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
@@ -57,6 +60,12 @@ public class RecipeService {
 
         recipeRepository.save(recipe);
 
+    }
+
+    public void delete(Recipe recipe){
+        if(mealService.countAllByRecipe(recipe) > 0)
+            prompt.add("recipeinmeal");
+        else recipeRepository.delete(recipe);
     }
 
 }

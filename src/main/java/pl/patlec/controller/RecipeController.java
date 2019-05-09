@@ -33,9 +33,9 @@ public class RecipeController {
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
     public String recipeDetails(@PathVariable long id, Model model){
 
-        model.addAttribute("recipe", recipeService.findById(id));
-        model.addAttribute("ingredients", stringToList(recipeService.findById(id).getIngredients()));
-        model.addAttribute("steps", stringToList(recipeService.findById(id).getPreparation()));
+        model.addAttribute("recipe", recipeService.getById(id));
+        model.addAttribute("ingredients", stringToList(recipeService.getById(id).getIngredients()));
+        model.addAttribute("steps", stringToList(recipeService.getById(id).getPreparation()));
 
         return "recipes/details";
     }
@@ -74,9 +74,9 @@ public class RecipeController {
     @GetMapping("/edit/{id}")
     private String edit(@PathVariable long id, Model model){
 
-        model.addAttribute("recipe", recipeService.findById(id));
-        model.addAttribute("ingredients", stringToList(recipeService.findById(id).getIngredients()));
-        model.addAttribute("steps", stringToList(recipeService.findById(id).getPreparation()));
+        model.addAttribute("recipe", recipeService.getById(id));
+        model.addAttribute("ingredients", stringToList(recipeService.getById(id).getIngredients()));
+        model.addAttribute("steps", stringToList(recipeService.getById(id).getPreparation()));
 
 
         return "recipes/edit";
