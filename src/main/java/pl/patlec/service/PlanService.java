@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.patlec.dto.PlanDto;
 import pl.patlec.model.Plan;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.User;
 import pl.patlec.repo.PlanRepository;
 import java.security.Principal;
@@ -16,6 +17,8 @@ public class PlanService {
 
     private final PlanRepository planRepository;
     private final UserService userService;
+    private final MealService mealService;
+    private final Prompt prompt;
 
     public List<Plan> all(){
         return planRepository.findAll();
@@ -43,5 +46,11 @@ public class PlanService {
         plan.setAuthor(userService.findUserByEmail(principal.getName()));
 
         planRepository.save(plan);
+    }
+
+    public void delete(Plan plan){
+        if(mealService.countAllByPlan(plan) > 0)
+            prompt.add("mealinplan");
+        else planRepository.delete(plan);
     }
 }
