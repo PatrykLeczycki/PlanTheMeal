@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.patlec.model.User;
 import pl.patlec.repo.RoleRepository;
+import pl.patlec.service.PlanService;
+import pl.patlec.service.RecipeService;
 import pl.patlec.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +23,9 @@ import java.util.Objects;
 public class AdminController {
 
     private final UserService userService;
-
     private final RoleRepository roleRepository;
+    private final PlanService planService;
+    private final RecipeService recipeService;
 
     @GetMapping("/users")
     public String all(Model model, Principal principal){
@@ -30,7 +33,6 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("loggedUser", principal.getName());
 
-        //TODO: gryzie się z panelem powitalnym
         return "admins/users";
     }
 
@@ -51,6 +53,21 @@ public class AdminController {
         // TODO: dać obsługę nieistniejącego usera
 
         return "redirect:/admin/users";
+    }
+
+
+    @RequestMapping(value = "/plan/delete/{id}", method = RequestMethod.GET)
+    public String deletePlan(@PathVariable("id") Long id){
+
+        planService.delete(planService.getById(id));
+        return "redirect:/user/plan/all";
+    }
+
+    @RequestMapping(value = "/recipe/delete/{id}", method = RequestMethod.GET)
+    public String deleteRecipe(@PathVariable("id") Long id){
+
+        recipeService.delete(recipeService.getById(id));
+        return "redirect:/user/recipe/all";
     }
 
 }
