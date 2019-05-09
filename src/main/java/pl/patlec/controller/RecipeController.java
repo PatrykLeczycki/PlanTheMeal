@@ -91,15 +91,11 @@ public class RecipeController {
 
         if(result.hasErrors() || "".equals(recipe.getPreparation()) || "".equals(recipe.getIngredients())){
 
-            if("".equals(recipe.getPreparation())){
+            if("".equals(recipe.getPreparation()))
                 model.addAttribute("nopreparation", true);
-                System.out.println("1");
-            }
 
-            if("".equals(recipe.getIngredients())){
+            if("".equals(recipe.getIngredients()))
                 model.addAttribute("noingredients", true);
-                System.out.println("2");
-            }
 
             model.addAttribute("steps", stringToList(recipe.getPreparation()));
             model.addAttribute("ingredients", stringToList(recipe.getIngredients()));
