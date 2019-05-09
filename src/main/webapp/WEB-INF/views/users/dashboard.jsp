@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,21 +17,21 @@
             <div class="dashboard-header m-4">
                 <div class="dashboard-menu">
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/user/recipe/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
                             <span class="title">add recipe</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/user/plan/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
                             <span class="title">add plan</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/user/meal/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
-                            <span class="title">add recipe to plan</span>
+                            <span class="title">add meal to plan</span>
                         </a>
                     </div>
                 </div>
@@ -42,67 +43,44 @@
                     </div>
                     <div class="alert-item alert-light">
                         <i class="far icon-calendar fa-calendar-alt"></i>
-                        <span class="font-weight-bold">Added plans: 1</span>
+                        <span class="font-weight-bold">Added plans: ${plans}</span>
                     </div>
                 </div>
             </div>
-            <div class="m-4 p-4 border-dashed">
-                <h2 class="dashboard-content-title">
-                    <span>Ostatnio dodany plan:</span> Plan jak u mamy
-                </h2>
-                <table class="table">
-                    <thead>
-                    <tr class="d-flex">
-                        <th class="col-2">Poniedziałek</th>
-                        <th class="col-8"></th>
-                        <th class="col-2"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="d-flex">
-                        <td class="col-2">śniadanie</td>
-                        <td class="col-8">płatki owsiane z jagodami i komosą ryżową</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-2">śniadanie</td>
-                        <td class="col-8">kanapka z pastą rybną</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-2">obiad</td>
-                        <td class="col-8">zupa pomidorowa</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <thead>
-                    <tr class="d-flex">
-                        <th class="col-2">Wtorek</th>
-                        <th class="col-8"></th>
-                        <th class="col-2"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="d-flex">
-                        <td class="col-2">śniadanie</td>
-                        <td class="col-8">płatki owsiane z jagodami i komosą ryżową</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-2">drugie śniadanie</td>
-                        <td class="col-8">pączki</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    <tr class="d-flex">
-                        <td class="col-2">obiad</td>
-                        <td class="col-8">schabowy w panierce</td>
-                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Szczegóły</button></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+
+            <c:if test="${!noplan}">
+                <div class="m-4 p-4 border-dashed">
+                    <h2 class="dashboard-content-title">
+                        <span>Latest added plan:</span> ${lastplanname}
+                    </h2>
+
+                    <c:if test="${not empty lastplan}">
+                        <c:forEach items="${lastplan}" var="day">
+                            <table class="table">
+                                <thead>
+                                <tr class="d-flex">
+                                    <th class="col-2">${day.key}</th>
+                                    <th class="col-8"></th>
+                                    <th class="col-2"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${day.value}" var="meal">
+                                    <tr class="d-flex">
+                                        <td class="col-2">${meal.name}</td>
+                                        <td class="col-8">${meal.recipe.name}</td>
+                                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Details</button></td>
+                                    </tr>
+                                </c:forEach>
+
+                                </tbody>
+                            </table>
+                        </c:forEach>
+                    </c:if>
+                </div>
+            </c:if>
+
+
         </div>
     </div>
 </section>
