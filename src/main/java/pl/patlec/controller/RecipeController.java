@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.patlec.dto.RecipeDto;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.Recipe;
 import pl.patlec.service.RecipeService;
 
@@ -22,11 +23,18 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final Prompt prompt;
 
     @GetMapping("/all")
     public String allRecipes(Model model){
 
         model.addAttribute("recipes", recipeService.all());
+
+        if(prompt.doesContain("recipeinmeal")){
+            model.addAttribute("deleteerror", true);
+            prompt.getNames().remove("recipeinmeal");
+        }
+
         return "recipes/all";
     }
 
