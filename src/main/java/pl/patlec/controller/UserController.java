@@ -4,15 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.patlec.model.User;
+import pl.patlec.service.PlanService;
 import pl.patlec.service.RecipeService;
 import pl.patlec.service.UserService;
-
 import java.security.Principal;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -21,6 +19,8 @@ public class UserController {
 
     private final UserService userService;
     private final RecipeService recipeService;
+    private final PlanService planService;
+    private final PlanController planController;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -28,7 +28,52 @@ public class UserController {
     public String dashboard(Model model, Principal principal){
 
         model.addAttribute("recipes", recipeService.countByUser(userService.findUserByEmail(principal.getName())));
+        model.addAttribute("plans", planService.countByUser(userService.findUserByEmail(principal.getName())));
+
+        Long lastPlanId = planService.getUserLastPlanId(principal);
+
+        if (Objects.isNull(lastPlanId))
+            model.addAttribute("noplans", true);
+        else {
+            model.addAttribute("lastplanname", planService.getById(lastPlanId).getName());
+            model.addAttribute("lastplan", planController.planDetails(lastPlanId));
+        }
+
         return "users/dashboard";
+    }
+
+    @GetMapping("/editdata")
+    public String editData(Model model, Principal principal){
+
+        User user = userService.findUserByEmail(principal.getName());
+
+        model.addAttribute("name", user.getName());
+        model.addAttribute("surname", user.getSurname());
+        return "users/editdata";
+    }
+
+    @PostMapping("/editdata")
+    public String editData(@RequestParam("name") String name, @RequestParam("surname") String surname, Model model, Principal principal){
+
+        User user = userService.findUserByEmail(principal.getName());
+
+        if(name.length() < 1 || surname.length() < 1){
+            if(name.length() < 1)
+                model.addAttribute("emptyname", true);
+            if(surname.length() < 1)
+                model.addAttribute("emptysurname", true);
+
+            model.addAttribute("name", user.getName());
+            model.addAttribute("surname", user.getSurname());
+
+           return "users/editdata";
+        }
+
+        user.setName(name);
+        user.setSurname(surname);
+        userService.addUser(user);
+
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/newpassword")
