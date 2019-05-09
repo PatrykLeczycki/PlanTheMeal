@@ -42,11 +42,6 @@ public class LoginRegisterController {
             return "redirect:/login?registered=true";
         }
 
-        System.out.println(userService.findUserByEmail(userDto.getEmail()) != null);
-        System.out.println(!userDto.getPassword().equals(userDto.getConfirmPassword()));
-        System.out.println(userDto.getEmail().equals(userDto.getPassword()));
-
-
         model.addAttribute("emailexists", userService.findUserByEmail(userDto.getEmail()) != null);
         model.addAttribute("passwordseq", !userDto.getPassword().equals(userDto.getConfirmPassword()));
         model.addAttribute("emaileqpass", userDto.getEmail().equals(userDto.getPassword()));
