@@ -4,6 +4,10 @@
             Plan <span>The Meal</span>
         </a>
         <ul class="nav nounderline text-uppercase">
+
+            <li class="nav-item ml-4">
+                <a class="nav-link color-header" href="${pageContext.request.contextPath}/user/dashboard">Dashboard</a>
+            </li>
             <li class="nav-item ml-4">
                 <a class="nav-link color-header" href="${pageContext.request.contextPath}/logout">Logout</a>
             </li>
