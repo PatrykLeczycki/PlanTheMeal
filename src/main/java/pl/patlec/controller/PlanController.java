@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.patlec.dto.PlanDto;
 import pl.patlec.model.Meal;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.Weekday;
 import pl.patlec.service.MealService;
 import pl.patlec.service.PlanService;
@@ -25,10 +26,17 @@ public class PlanController {
 
     private final PlanService planService;
     private final MealService mealService;
+    private final Prompt prompt;
 
     @GetMapping("/all")
     public String all(Model model){
         model.addAttribute("plans", planService.all());
+
+        if(prompt.doesContain("mealinplan")){
+            model.addAttribute("deleteerror", true);
+            prompt.getNames().remove("mealinplan");
+        }
+
         return "plans/all";
     }
 
