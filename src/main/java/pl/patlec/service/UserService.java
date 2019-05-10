@@ -5,6 +5,7 @@ import org.dom4j.DocumentException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.patlec.dto.UserDto;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.User;
 import pl.patlec.repo.RoleRepository;
 import pl.patlec.repo.UserRepository;
@@ -26,6 +27,8 @@ public class UserService {
     private final RoleRepository roleRepository;
 
     private final Mailer mailer;
+
+    private final Prompt prompt;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -61,6 +64,7 @@ public class UserService {
         user.setRegistrationToken(generateToken());
         userRepository.save(user);
         sendRegistrationEmail(user.getEmail());
+        prompt.add("recoverymailsent");
     }
 
     public String generateToken(){
@@ -78,11 +82,12 @@ public class UserService {
         return token.toString();
     }
 
-    public String addPassRecoveryToken(String email) {
+    @Transactional
+    public void addPassRecoveryToken(String email) {
 
         User user = userRepository.findByEmail(email);
-
-        return "http://www.ameliaweb.pl/gifts/token/" + user.getRegistrationToken() + "/" + user.getId();
+        user.setPassRecoveryToken(generateToken());
+        userRepository.save(user);
     }
 
     public void sendRegistrationEmail(String receiverEmail) throws MessagingException, IOException, DocumentException {
@@ -96,56 +101,38 @@ public class UserService {
 
         String message= "<html lang=\"en\">" +
                 "<head>" +
-                "<title>Odzyskiwanie hasla</title>" +
+                "<title>Confirm registration</title>" +
                 "</head>" +
                 "<body>" +
-                "<div style=\"background-color: #f9c910; text-align: center\"><h1>Album Manager</h1></div>" +
+                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/\">PlanTheMeal</a></h1></div>" +
                 "<p style=\"text-align: center\">Thank you for registering on our site. Please click link below to confirm registration process:</p>" +
                 "<p style=\"text-align: center\"><a style=\"color: #2c7021; text-decoration: none; font-size: 30px\" href=\"" + link + "\" target=\"_blank\">Confirm registration</a></p>" +
                 "<p style=\"margin-top: 50px; text-align: center\">If you didn't register on our site, ignore this e-mail and make sure your data is safe.</p>" +
                 "</body></html>";
 
-        mailer.send(receiverEmail, "Registration on Album Manager", message);
+        mailer.send(receiverEmail, "Registration on PlanTheMeal", message);
     }
 
+    public void sendPassRecoveryEmail(String receiverEmail) {
 
-    /*
+        User user = userRepository.findByEmail(receiverEmail);
 
-    <html lang="en">
-<head>
-    <title>Title</title>
-</head>
-<body>
-<div style="background-color: #f9c910; text-align: center"><h1>Album Manager</h1></div>
-<p style="text-align: center">You have received this e-mail because your e-mail address was given during password retrieval process. To retrieve your password click here:</p>
-<p style="text-align: center"><a style="color: #2c7021; text-decoration: none; font-size: 30px" href="http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/" target="_blank">Retrieve password</a></p>
-<p style="margin-top: 50px; text-align: center">If you didn't lost your password, ignore this e-mail and make sure your data is safe.</p>
-</body>
-</html>
+        //String link = "http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
 
-     */
+        String link = "http://localhost:8080/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
 
-    /*public void sendPassRecoveryEmail(String receiverEmail) {
 
-        String link = addPassRecoveryToken(receiverEmail);
 
-        String message= "<!DOCTYPE html>" +
-                "<html lang=\"pl\">" +
+        String message= "<html lang=\"en\">" +
                 "<head>" +
-                "<meta charset=\"UTF-8\">" +
-                "<title>Odzyskiwanie hasla</title>" +
-                "<meta http-equiv=\"X-Ua-Compatible\" content=\"IE=edge,chrome=1\">" +
+                "<title>Password recovery</title>" +
                 "</head>" +
                 "<body>" +
-                "<div style=\"background-color: #f9c910; text-align: center\"><h1>Oddaj rzeczy</h1></div>" +
-                "<p style=\"text-align: center\">W celu odzyskania hasla do aplikacji \"Oddaj rzeczy\" kliknij w link:</p>" +
-                "<p style=\"text-align: center;\"><a style=\"color: #2c7021; text-decoration: none; font-size: 30px\" href=\"" + link + "\" target=\"_blank\">Odzyskaj haslo</a></p>" +
-                "<p style=\"margin-top: 50px; text-align: center\">Jezeli ten mail to pomylka, skasuj wiadomosc.</p>" +
-                "<p style=\"margin-top: 50px; text-align: center\">Pozdrawiamy</p>" +
-                "<p style=\"text-align: center\"><a href=\"http://www.ameliaweb.pl/gifts\">Link do aplikacji.</a></p>" +
-                "</body>" +
-                "</html>";
-        String subject = "Aplikacja \"Oddaj rzeczy\". Resetowanie hasla";
-        mailer.send("stan.zapalny.band@gmail.com","halina07033",receiverEmail,subject,message);
-    }*/
+                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/\">PlanTheMeal</a></h1></div>" +
+                "<p style=\"text-align: center\">You have received this e-mail because your e-mail address was given during password retrieval process. To retrieve your password click here:</p>" +
+                "<p style=\"text-align: center\"><a style=\"color: #2c7021; text-decoration: none; font-size: 30px\" href=\"" + link + "\" target=\"_blank\">Retrieve password</a></p>" +
+                "<p style=\"margin-top: 50px; text-align: center\">If you didn't lost your password, ignore this e-mail and make sure your data is safe.</p>" + "</body></html>";
+
+        mailer.send(receiverEmail, "PlanTheMeal - password recovery", message);
+    }
 }

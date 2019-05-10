@@ -30,6 +30,8 @@
                         <input type="text" class="form-control" id="password" name="password" placeholder="Password">
                     </div>
                     <button class="btn btn-color rounded-0" type="submit">Log in</button>
+                    <p>Not a member? <a href="${pageContext.request.contextPath}/register">Sign up</a></p>
+                    <p>Forgot <a href="${pageContext.request.contextPath}/lostpassword">password?</a></p>
                 </form>
             </div>
         </div>
