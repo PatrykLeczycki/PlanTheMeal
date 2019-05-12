@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.patlec.model.User;
 import pl.patlec.repo.RoleRepository;
+import pl.patlec.service.MealService;
 import pl.patlec.service.PlanService;
 import pl.patlec.service.RecipeService;
 import pl.patlec.service.UserService;
@@ -26,6 +27,7 @@ public class AdminController {
     private final RoleRepository roleRepository;
     private final PlanService planService;
     private final RecipeService recipeService;
+    private final MealService mealService;
 
     @GetMapping("/users")
     public String all(Model model, Principal principal){
@@ -68,6 +70,13 @@ public class AdminController {
 
         recipeService.delete(recipeService.getById(id));
         return "redirect:/user/recipe/all";
+    }
+
+    @RequestMapping(value = "/plan/{planid}/deletemeal/{mealid}", method = RequestMethod.GET)
+    public String deleteMeal(@PathVariable("planid") Long planId, @PathVariable("mealid") Long mealId){
+
+        mealService.deleteMeal(mealId);
+        return "redirect:/user/plan/details/" + planId;
     }
 
 }
