@@ -21,27 +21,24 @@
             <div class="carousel-item active">
                 <div class="container w-75 d-flex">
                     <div class="carousel-caption d-block">
-                        <h1>Lorem ipsum dolor sit amet</h1>
-                        <h3> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</h3>
+                        <h1>Start eating better</h1>
+                        <h3>Let PlanTheMeal help you with eating healthily and tastily and start planning your meals for whole week.</h3>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="container w-75 d-flex">
                     <div class="carousel-caption d-block">
-                        <h1>Torem ipsum dolor sit amet</h1>
-                        <h3> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</h3>
+                        <h1>Share your ideas</h1>
+                        <h3>Our users have already created ${plans} plans and ${recipes} recipes.</h3>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="container w-75 d-flex">
                     <div class="carousel-caption d-block">
-                        <h1>Borem ipsum dolor sit amet</h1>
-                        <h3> consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</h3>
+                        <h1>Don't wait</h1>
+                        <h3>Register today and benefit from all features for free.</h3>
                     </div>
                 </div>
             </div>
@@ -57,7 +54,7 @@
     </div>
 </section>
 
-<section class="section-more padding-small">
+<section class="section-more padding-small" style="display: none">
     <div class="container d-flex justify-content-between">
         <div class="mr-4">
             <h1 class="pb-3">Lorem ipsum dolor sit amet</h1>
@@ -72,7 +69,7 @@
     </div>
 </section>
 
-<section class="padding-small details bg-light">
+<section class="padding-small details bg-light" style="display: none">
     <div class="container">
         <div class="row">
             <div class="col text-center">
@@ -98,7 +95,7 @@
 </section>
 
 
-<section class="newsletter-section padding-small">
+<section class="newsletter-section padding-small" style="display: none">
     <div class="container">
         <div class="row">
             <div class="col">
@@ -119,7 +116,7 @@
     </div>
 </section>
 
-<section class="padding-medium story bg-light" id="about">
+<section class="padding-medium story bg-light" id="about" style="display: none">
     <div class="container d-flex justify-content-center align-items-center">
         <div class="row">
             <div class="col-4 mr-4">
@@ -139,7 +136,7 @@
     </div>
 </section>
 
-<section class="last-info-section padding-small" id="contact">
+<section class="last-info-section padding-small" id="contact" style="display: none">
     <div class="container">
         <div class="row">
             <div class="col">
