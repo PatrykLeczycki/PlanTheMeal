@@ -69,10 +69,9 @@
                                     <tr class="d-flex">
                                         <td class="col-2">${meal.name}</td>
                                         <td class="col-8">${meal.recipe.name}</td>
-                                        <td class="col-2"><button type="button" class="btn btn-primary rounded-0">Details</button></td>
+                                        <td class="col-2"><a href="${pageContext.request.contextPath}/user/recipe/details/${meal.recipe.id}?dashboard" class="btn btn-info rounded-0 text-light m-1">Details</a></td>
                                     </tr>
                                 </c:forEach>
-
                                 </tbody>
                             </table>
                         </c:forEach>
