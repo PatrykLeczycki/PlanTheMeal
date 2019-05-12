@@ -16,10 +16,17 @@
 
         <div class="m-4 p-3 width-medium">
             <div class="dashboard-content border-dashed p-3 m-4 view-height">
-                <c:if test="${deleteerror}">
+                <c:if test="${mealinplan}">
                     <div class="m-4 p-3 width-medium">
                         <div class="dashboard-content border-dashed p-3 m-4">
-                            <span class="error">Error: firstly delete all meals from plan</span>
+                            <span class="error">Error: firstly delete all meals from plan.</span>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${mealnotfound}">
+                    <div class="m-4 p-3 width-medium">
+                        <div class="dashboard-content border-dashed p-3 m-4">
+                            <span class="error">Error: meal with given ID not found</span>
                         </div>
                     </div>
                 </c:if>
