@@ -30,7 +30,7 @@ public class RecipeController {
 
         model.addAttribute("recipes", recipeService.all());
 
-        if(prompt.doesContain("recipeinmeal")){
+        if(prompt.contains("recipeinmeal")){
             model.addAttribute("deleteerror", true);
             prompt.getNames().remove("recipeinmeal");
         }
