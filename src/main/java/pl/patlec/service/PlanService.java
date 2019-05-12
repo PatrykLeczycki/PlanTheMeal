@@ -48,9 +48,15 @@ public class PlanService {
         planRepository.save(plan);
     }
 
+    public void edit(Plan plan){
+        planRepository.save(plan);
+    }
+
     public void delete(Plan plan){
-        if(mealService.countAllByPlan(plan) > 0)
+        if(mealService.countAllByPlan(plan) > 0){
             prompt.add("mealinplan");
+            prompt.getAdditionalInfo().put("mealinplanwithid", "" + plan.getId());
+        }
         else planRepository.delete(plan);
     }
 }
