@@ -20,7 +20,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -76,7 +75,7 @@ public class LoginRegisterController {
 
         if (auth instanceof AnonymousAuthenticationToken){
 
-           if(prompt.doesContain("recoverymailsent")){
+           if(prompt.contains("recoverymailsent")){
                 model.addAttribute("recoverymailsent", true);
                 prompt.getNames().remove("recoverymailsent");
            }
