@@ -10,13 +10,13 @@
             <li class="nav-item ml-4">
                 <a class="nav-link color-header" href="${pageContext.request.contextPath}/register">Register</a>
             </li>
-            <li class="nav-item ml-4">
+            <li class="nav-item ml-4" style="display: none">
                 <a class="nav-link" href="#about">About PlanTheMeal</a>
             </li>
-            <li class="nav-item ml-4">
+            <li class="nav-item ml-4" style="display: none">
                 <a class="nav-link disabled" href="recipes.html">Recipes</a>
             </li>
-            <li class="nav-item ml-4">
+            <li class="nav-item ml-4" style="display: none">
                 <a class="nav-link disabled" href="#contact">Contact us</a>
             </li>
         </ul>
