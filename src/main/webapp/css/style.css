@@ -15,7 +15,7 @@
 }
 
 /* Style the search field */
-div.example input[type=text] {
+div.input-with-button input[type=text] {
   padding: 10px;
   font-size: 17px;
   float: left;
@@ -40,13 +40,13 @@ div.example input[type=text] {
   background: #ff6600;
 }
 
-div.example button:hover {
+div.input-with-button button:hover {
   /*background: #0b7dda;*/
   background: orangered;
 }
 
 /* Clear floats */
-div.example::after {
+div.input-with-button::after {
   content: "";
   clear: both;
   display: table;
