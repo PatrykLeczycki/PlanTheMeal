@@ -45,7 +45,7 @@
                 <div class="col-5 border-bottom border-3"><h3 class="text-uppercase">Ingredients</h3></div>
             </div>
             <div class="row d-flex">
-                <div class="col-5 p-4 flex example preparation">
+                <div class="col-5 p-4 flex input-with-button preparation">
                     <c:if test="${nopreparation}">
                         <span class="error">Preparation list must not be empty</span>
                     </c:if>
@@ -65,12 +65,11 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
-
                         <div class="btn add">Add</div>
                 </div>
                 <div class="col-2"></div>
 
-                <div class="col-5 p-4 flex example ingredient">
+                <div class="col-5 p-4 flex input-with-button ingredient">
                     <c:if test="${noingredients}">
                         <span class="error">Ingredient list must not be empty</span>
                     </c:if>
