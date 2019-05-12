@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -18,7 +19,9 @@ import java.util.Set;
 public class Prompt {
     private Set<String> names = new HashSet<>();
 
-    public boolean doesContain(String prompt){
+    private Map<String, String> additionalInfo;
+
+    public boolean contains(String prompt){
         return names.contains(prompt);
     }
 
