@@ -6,18 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.patlec.dto.PlanDto;
-import pl.patlec.model.Meal;
-import pl.patlec.model.Prompt;
-import pl.patlec.model.Weekday;
+import pl.patlec.model.*;
 import pl.patlec.service.MealService;
 import pl.patlec.service.PlanService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,9 +27,16 @@ public class PlanController {
     public String all(Model model){
         model.addAttribute("plans", planService.all());
 
-        if(prompt.doesContain("mealinplan")){
-            model.addAttribute("deleteerror", true);
+        if(prompt.contains("mealinplan")){
+            Long planId = Long.parseLong(prompt.getAdditionalInfo().get("mealinplanwithid"));
+            model.addAttribute("mealinplan", true);
+            model.addAttribute("planid", planId);
             prompt.getNames().remove("mealinplan");
+        }
+
+        if(prompt.contains("mealnotfound")){
+            model.addAttribute("mealnotfound", true);
+            prompt.getNames().remove("mealnotfound");
         }
 
         return "plans/all";
@@ -60,9 +62,62 @@ public class PlanController {
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Long id, Model model){
 
+        Plan plan = planService.getById(id);
         model.addAttribute("weekplan", planDetails(id));
+        model.addAttribute("planid", id);
+        model.addAttribute("planname", plan.getName());
+        model.addAttribute("plandesc", plan.getDescription());
+
+        if(prompt.contains("mealnotfound")){
+            prompt.getNames().remove("mealnotfound");
+            model.addAttribute("mealnotfound", true);
+        }
+
+        if(prompt.contains("mealdeleted")){
+            prompt.getNames().remove("mealdeleted");
+            model.addAttribute("mealdeleted", true);
+        }
+
         return "plans/details";
 
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") long id, Model model){
+
+        if(!Objects.isNull(planService.getById(id))){
+            model.addAttribute("id", id);
+            model.addAttribute("name", planService.getById(id).getName());
+            model.addAttribute("description", planService.getById(id).getDescription());
+            return "plans/edit";
+        }
+
+        prompt.add("plannotfound");
+        return "redirect:/user/plan/all";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable("id") long id, @RequestParam("name") String name, @RequestParam("description") String description, Model model){
+
+        if(name.length() < 1 || description.length() < 1){
+            if(name.length() < 1)
+                model.addAttribute("emptyname", true);
+            if(description.length() < 1)
+                model.addAttribute("emptydesc", true);
+
+            model.addAttribute("id", id);
+            model.addAttribute("name", planService.getById(id).getName());
+            model.addAttribute("description", planService.getById(id).getDescription());
+
+            return "plans/edit";
+        }
+
+        Plan plan = planService.getById(id);
+        plan.setName(name);
+        plan.setDescription(description);
+        planService.edit(plan);
+
+        return "redirect:/user/plan/details/" + id;
     }
 
     public Map<String, List<Meal>> planDetails(Long id){
