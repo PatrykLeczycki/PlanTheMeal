@@ -16,20 +16,22 @@
 
         <div class="m-4 p-3 width-medium">
             <div class="dashboard-content border-dashed p-3 m-4 view-height">
-                <c:if test="${mealinplan}">
+                <c:if test="${mealinplan || mealnotfound || accessdenied}">
                     <div class="m-4 p-3 width-medium">
                         <div class="dashboard-content border-dashed p-3 m-4">
-                            <span class="error">Error: firstly delete all meals from plan.</span>
+                            <c:if test="${mealinplan}">
+                                <span class="error">Error: firstly delete all meals from plan.</span>
+                            </c:if>
+                            <c:if test="${mealnotfound}">
+                                <span class="error">Error: meal with given ID not found</span>
+                            </c:if>
+                            <c:if test="${accessdenied}">
+                                <span class="error">Error: you are not allowed to perform this action</span>
+                            </c:if>
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${mealnotfound}">
-                    <div class="m-4 p-3 width-medium">
-                        <div class="dashboard-content border-dashed p-3 m-4">
-                            <span class="error">Error: meal with given ID not found</span>
-                        </div>
-                    </div>
-                </c:if>
+
                 <div class="row border-bottom border-3 p-1 m-1">
                     <div class="col noPadding"><h3 class="color-header text-uppercase">PLAN LIST</h3></div>
                     <div class="col noPadding d-flex justify-content-end mb-2"><a href="${pageContext.request.contextPath}/user/plan/add" class="btn btn-success rounded-0 pt-0 pb-0 pr-4 pl-4">Add plan</a></div>
