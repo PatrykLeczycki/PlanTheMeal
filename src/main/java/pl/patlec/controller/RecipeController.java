@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.patlec.dto.RecipeDto;
 import pl.patlec.model.Prompt;
 import pl.patlec.model.Recipe;
+import pl.patlec.model.User;
 import pl.patlec.service.RecipeService;
+import pl.patlec.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,6 +25,7 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final UserService userService;
     private final Prompt prompt;
 
     @GetMapping("/all")
@@ -32,10 +35,14 @@ public class RecipeController {
         model.addAttribute("loggedUser", principal.getName());
 
         if(prompt.contains("recipeinmeal")){
-            model.addAttribute("deleteerror", true);
+            model.addAttribute("recipeinmeal", true);
             prompt.getNames().remove("recipeinmeal");
         }
 
+        if(prompt.contains("accessdenied")){
+            prompt.getNames().remove("accessdenied");
+            model.addAttribute("accessdenied", true);
+        }
         return "recipes/all";
     }
 
@@ -56,7 +63,7 @@ public class RecipeController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("recipeDto") @Valid RecipeDto recipeDto, BindingResult result, HttpServletRequest request, Principal principal, Model model){
+    public String add(@ModelAttribute("recipeDto") @Valid RecipeDto recipeDto, BindingResult result, HttpServletRequest request, Model model, Principal principal){
 
         String[] data = getDataFromRequest(request);
         recipeDto.setPreparation(data[0]);
@@ -81,25 +88,35 @@ public class RecipeController {
     }
 
     @GetMapping("/edit/{id}")
-    private String edit(@PathVariable long id, Model model){
+    private String edit(@PathVariable long id, Model model, Principal principal){
 
-        model.addAttribute("recipe", recipeService.getById(id));
-        model.addAttribute("ingredients", stringToList(recipeService.getById(id).getIngredients()));
-        model.addAttribute("steps", stringToList(recipeService.getById(id).getPreparation()));
+        User loggedUser = userService.findUserByEmail(principal.getName());
+        Recipe recipe = recipeService.getById(id);
 
+        boolean accessDenied = !loggedUser.equals(recipe.getAuthor()) && !userService.isAdmin(loggedUser);
+
+        if(accessDenied){
+            prompt.getNames().add("accessdenied");
+            return "redirect:/user/recipe/all";
+        }
+
+        model.addAttribute("recipe", recipe);
+        model.addAttribute("ingredients", stringToList(recipe.getIngredients()));
+        model.addAttribute("steps", stringToList(recipe.getPreparation()));
 
         return "recipes/edit";
     }
 
     @PostMapping("/edit")
-    private String edit(@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult result, HttpServletRequest request, Model model, Principal principal){
+    private String edit(@ModelAttribute("recipe") @Valid Recipe recipe, BindingResult result, HttpServletRequest request, Model model){
 
         String[] data = getDataFromRequest(request);
         recipe.setPreparation(data[0]);
         recipe.setIngredients(data[1]);
 
-        if(result.hasErrors() || "".equals(recipe.getPreparation()) || "".equals(recipe.getIngredients())){
+        boolean wrongData = result.hasErrors() || "".equals(recipe.getPreparation()) || "".equals(recipe.getIngredients());
 
+        if(wrongData){
             if("".equals(recipe.getPreparation()))
                 model.addAttribute("nopreparation", true);
 
@@ -108,18 +125,17 @@ public class RecipeController {
 
             model.addAttribute("steps", stringToList(recipe.getPreparation()));
             model.addAttribute("ingredients", stringToList(recipe.getIngredients()));
-
             return "recipes/edit";
         }
 
-        recipeService.edit(recipe, principal);
+        recipeService.edit(recipe);
         return "redirect:/user/recipe/all";
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteRecipe(@PathVariable("id") Long id){
+    public String deleteRecipe(@PathVariable("id") Long id, Principal principal){
 
-        recipeService.delete(recipeService.getById(id));
+        recipeService.delete(recipeService.getById(id), principal);
         return "redirect:/user/recipe/all";
     }
 
@@ -129,7 +145,7 @@ public class RecipeController {
         return new ArrayList<>(Arrays.asList(strings));
     }
 
-    public String[] getDataFromRequest(HttpServletRequest request){
+    public static String[] getDataFromRequest(HttpServletRequest request){
         String[] steps = request.getParameterValues("step");
         String[] ings = request.getParameterValues("ingredient");
 
