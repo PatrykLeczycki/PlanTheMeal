@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pl.patlec.model.Prompt;
 import pl.patlec.model.User;
 import pl.patlec.repo.RoleRepository;
-import pl.patlec.service.MealService;
-import pl.patlec.service.PlanService;
-import pl.patlec.service.RecipeService;
 import pl.patlec.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +23,15 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleRepository roleRepository;
-    private final PlanService planService;
-    private final RecipeService recipeService;
-    private final MealService mealService;
+    private final Prompt prompt;
 
     @GetMapping("/users")
     public String all(Model model, Principal principal){
+
+        if(!userService.isAdmin(userService.findUserByEmail(principal.getName()))){
+            prompt.getNames().add("accessdenied");
+            return "redirect:/user/dashboard";
+        }
 
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("loggedUser", principal.getName());
@@ -40,6 +41,11 @@ public class AdminController {
 
     @RequestMapping(value = "/changerole/{id}", method = RequestMethod.GET)
     public String changeUserRole(@PathVariable long id, HttpServletRequest request, Principal principal){
+
+        if(!userService.isAdmin(userService.findUserByEmail(principal.getName()))){
+            prompt.getNames().add("accessdenied");
+            return "redirect:/user/dashboard";
+        }
 
         User user = userService.findUserById(id);
 
