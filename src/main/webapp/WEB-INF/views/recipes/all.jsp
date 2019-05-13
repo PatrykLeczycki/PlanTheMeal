@@ -16,10 +16,15 @@
 
         <div class="m-4 p-3 width-medium">
             <div class="dashboard-content border-dashed p-3 m-4 view-height">
-                <c:if test="${deleteerror}">
+                <c:if test="${recipeinmeal || accessdenied}">
                     <div class="m-4 p-3 width-medium">
                         <div class="dashboard-content border-dashed p-3 m-4">
-                            <span class="error">Error: firstly delete recipe from all meals</span>
+                            <c:if test="${recipeinmeal}">
+                                <span class="error">Error: firstly delete recipe from all meals</span>
+                            </c:if>
+                            <c:if test="${accessdenied}">
+                                <span class="error">Error: you are not allowed to perform this action</span>
+                            </c:if>
                         </div>
                     </div>
                 </c:if>
