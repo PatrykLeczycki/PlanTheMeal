@@ -50,6 +50,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public boolean isAdmin(User user){
+        return user.getRoleSet().contains(roleRepository.findByName("ROLE_ADMIN"));
+    }
+
     @Transactional
     public void registerUser(UserDto userDto) throws MessagingException, IOException, DocumentException {
 
