@@ -53,17 +53,19 @@ public class RecipeService {
 
     }
 
-    public void edit(Recipe recipe, Principal principal){
-
+    public void edit(Recipe recipe){
         recipe.setUpdated(LocalDateTime.now());
-        recipe.setAuthor(userService.findUserByEmail(principal.getName()));
-
         recipeRepository.save(recipe);
-
     }
 
-    public void delete(Recipe recipe){
-        if(mealService.countAllByRecipe(recipe) > 0)
+    public void delete(Recipe recipe, Principal principal){
+
+        User loggedUser = userService.findUserByEmail(principal.getName());
+
+        if(!loggedUser.equals(recipe.getAuthor()) && !userService.isAdmin(loggedUser)){
+            prompt.add("accessdenied");
+        }
+        else if(mealService.countAllByRecipe(recipe) > 0)
             prompt.add("recipeinmeal");
         else recipeRepository.delete(recipe);
     }
