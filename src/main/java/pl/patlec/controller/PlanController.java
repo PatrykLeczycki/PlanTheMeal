@@ -42,6 +42,11 @@ public class PlanController {
             prompt.getNames().remove("mealnotfound");
         }
 
+        if(prompt.contains("accessdenied")){
+            prompt.getNames().remove("accessdenied");
+            model.addAttribute("accessdenied", true);
+        }
+
         return "plans/all";
     }
 
@@ -87,38 +92,35 @@ public class PlanController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") long id, Model model){
-
-        if(!Objects.isNull(planService.getById(id))){
-            model.addAttribute("id", id);
-            model.addAttribute("name", planService.getById(id).getName());
-            model.addAttribute("description", planService.getById(id).getDescription());
-            return "plans/edit";
-        }
-
-        prompt.add("plannotfound");
-        return "redirect:/user/plan/all";
+        model.addAttribute("id", id);
+        model.addAttribute("name", planService.getById(id).getName());
+        model.addAttribute("description", planService.getById(id).getDescription());
+        return "plans/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable("id") long id, @RequestParam("name") String name, @RequestParam("description") String description, Model model){
+    public String edit(@PathVariable("id") long id, @RequestParam("name") String name, @RequestParam("description") String description, Model model, Principal principal){
 
-        if(name.length() < 1 || description.length() < 1){
-            if(name.length() < 1)
+        if(!planService.edit(planService.getById(id), name, description, principal)){
+
+            if(prompt.contains("accessdenied"))
+                return "redirect:/user/plan/all";
+
+            if(prompt.contains("emptyname")){
+                prompt.getNames().remove("emptyname");
                 model.addAttribute("emptyname", true);
-            if(description.length() < 1)
+            }
+
+            if(prompt.contains("emptydesc")){
+                prompt.getNames().remove("emptydesc");
                 model.addAttribute("emptydesc", true);
+            }
 
             model.addAttribute("id", id);
             model.addAttribute("name", planService.getById(id).getName());
             model.addAttribute("description", planService.getById(id).getDescription());
-
             return "plans/edit";
         }
-
-        Plan plan = planService.getById(id);
-        plan.setName(name);
-        plan.setDescription(description);
-        planService.edit(plan);
 
         return "redirect:/user/plan/details/" + id;
     }
