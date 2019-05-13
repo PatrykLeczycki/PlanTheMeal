@@ -26,9 +26,10 @@ public class RecipeController {
     private final Prompt prompt;
 
     @GetMapping("/all")
-    public String allRecipes(Model model){
+    public String allRecipes(Model model, Principal principal){
 
         model.addAttribute("recipes", recipeService.all());
+        model.addAttribute("loggedUser", principal.getName());
 
         if(prompt.contains("recipeinmeal")){
             model.addAttribute("deleteerror", true);
@@ -112,6 +113,13 @@ public class RecipeController {
         }
 
         recipeService.edit(recipe, principal);
+        return "redirect:/user/recipe/all";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deleteRecipe(@PathVariable("id") Long id){
+
+        recipeService.delete(recipeService.getById(id));
         return "redirect:/user/recipe/all";
     }
 
