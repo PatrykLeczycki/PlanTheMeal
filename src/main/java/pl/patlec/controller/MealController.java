@@ -23,12 +23,6 @@ public class MealController {
     private final RecipeService recipeService;
     private final WeekdayService weekdayService;
 
-    @GetMapping("/all")
-    public String all(Model model){
-        model.addAttribute("meals", mealService.all());
-        return "meals/all";
-    }
-
     @GetMapping("/add")
     public String add(Model model){
         model.addAttribute("meal", new Meal());
@@ -45,7 +39,7 @@ public class MealController {
             return "meals/add";
 
         mealService.add(meal);
-        return "redirect:/user/meal/all";
+        return "redirect:/user/plan/details/" + meal.getPlan().getId();
     }
 
 }
