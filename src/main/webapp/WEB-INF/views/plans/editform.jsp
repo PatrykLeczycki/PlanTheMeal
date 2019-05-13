@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="m-4 p-3">
     <div class="dashboard-content border-dashed p-3 m-4 <%--view-height--%>">
         <div class="row border-bottom border-3">
