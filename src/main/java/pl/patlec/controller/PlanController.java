@@ -10,6 +10,7 @@ import pl.patlec.model.*;
 import pl.patlec.service.MealService;
 import pl.patlec.service.PlanService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
@@ -24,8 +25,10 @@ public class PlanController {
     private final Prompt prompt;
 
     @GetMapping("/all")
-    public String all(Model model){
+    public String all(Model model, Principal principal){
+
         model.addAttribute("plans", planService.all());
+        model.addAttribute("loggedUser", principal.getName());
 
         if(prompt.contains("mealinplan")){
             Long planId = Long.parseLong(prompt.getAdditionalInfo().get("mealinplanwithid"));
@@ -118,6 +121,22 @@ public class PlanController {
         planService.edit(plan);
 
         return "redirect:/user/plan/details/" + id;
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String deletePlan(@PathVariable("id") Long id, Principal principal){
+
+        planService.delete(planService.getById(id), principal);
+        return "redirect:/user/plan/all";
+    }
+
+    @RequestMapping(value = "/deletemeal/{mealid}", method = RequestMethod.GET)
+    public String deleteMeal(@PathVariable("mealid") Long mealId, HttpServletRequest request){
+
+        mealService.deleteMeal(mealId);
+        String planId = request.getParameter("planid");
+
+        return "redirect:/user/plan/details/" + Long.parseLong(planId);
     }
 
     public Map<String, List<Meal>> planDetails(Long id){
