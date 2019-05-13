@@ -29,6 +29,7 @@ public class UserController {
 
         model.addAttribute("recipes", recipeService.countByUser(userService.findUserByEmail(principal.getName())));
         model.addAttribute("plans", planService.countByUser(userService.findUserByEmail(principal.getName())));
+        model.addAttribute("dashboard", true);
 
         Long lastPlanId = planService.getUserLastPlanId(principal);
 
