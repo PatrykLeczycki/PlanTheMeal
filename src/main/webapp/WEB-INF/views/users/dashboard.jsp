@@ -16,6 +16,15 @@
         <div class="m-4 p-4 width-medium">
             <div class="dashboard-header m-4">
                 <div class="dashboard-menu">
+                    <c:if test="${accessdenied}">
+                        <div class="m-4 p-3 width-medium">
+                            <div class="dashboard-content border-dashed p-3 m-4">
+                                <c:if test="${accessdenied}">
+                                    <span class="error">Error: you are not allowed to perform this action</span>
+                                </c:if>
+                            </div>
+                        </div>
+                    </c:if>
                     <div class="menu-item border-dashed">
                         <a href="${pageContext.request.contextPath}/user/recipe/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
@@ -48,7 +57,7 @@
                 </div>
             </div>
 
-            <c:if test="${!noplan}">
+            <c:if test="${!noplans}">
                 <div class="m-4 p-4 border-dashed">
                     <h2 class="dashboard-content-title">
                         <span>Latest added plan:</span> ${lastplanname}
