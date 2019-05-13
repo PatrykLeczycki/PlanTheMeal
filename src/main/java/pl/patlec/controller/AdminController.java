@@ -57,26 +57,4 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-
-    @RequestMapping(value = "/plan/delete/{id}", method = RequestMethod.GET)
-    public String deletePlan(@PathVariable("id") Long id){
-
-        planService.delete(planService.getById(id));
-        return "redirect:/user/plan/all";
-    }
-
-    @RequestMapping(value = "/recipe/delete/{id}", method = RequestMethod.GET)
-    public String deleteRecipe(@PathVariable("id") Long id){
-
-        recipeService.delete(recipeService.getById(id));
-        return "redirect:/user/recipe/all";
-    }
-
-    @RequestMapping(value = "/plan/{planid}/deletemeal/{mealid}", method = RequestMethod.GET)
-    public String deleteMeal(@PathVariable("planid") Long planId, @PathVariable("mealid") Long mealId){
-
-        mealService.deleteMeal(mealId);
-        return "redirect:/user/plan/details/" + planId;
-    }
-
 }
