@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="text-color-darker">
     <div class="dashboard-content border-dashed p-3 m-4 view-height"> <%--p-3 m-4 view-height odpowiada za wydłuzanie/poszerzanie diva--%>
         <div class="mt-4 ml-4 mr-4">
@@ -76,14 +75,14 @@
                     <c:choose>
                         <c:when test="${not empty ingredients}">
                             <c:forEach items="${ingredients}" var="ingredient">
-                                <div>
+                                <div class="ingredient">
                                     <input type="text" name="ingredient" value="${ingredient}"/>
                                     <div class="delete"><i class="fa fa-trash" style="padding-right: 5px;"></i></div>
                                 </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div>
+                            <div class="ingredient">
                                 <input type="text" name="ingredient" value="${ingredient}"/>
                                 <div class="delete"><i class="fa fa-trash" style="padding-right: 5px;"></i></div>
                             </div>
