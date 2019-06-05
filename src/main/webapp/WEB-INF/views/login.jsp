@@ -27,7 +27,7 @@
                         <input type="text" class="form-control" id="email" name="email" placeholder="E-mail address">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="password" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                     </div>
                     <button class="btn btn-color rounded-0" type="submit">Log in</button>
                     <p>Not a member? <a href="${pageContext.request.contextPath}/register">Sign up</a></p>
