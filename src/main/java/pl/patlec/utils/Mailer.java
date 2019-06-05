@@ -46,9 +46,9 @@ public class Mailer {
     }
 
     public static String[] getData(){
-        File file = new File("/home/patryk/Pulpit/pass.txt");
+        //File file = new File("/home/patryk/Pulpit/pass.txt");
 
-        //File file = new File("/password/data.txt");
+        File file = new File("/pass.txt");
         String[] data = new String[2];
 
         try (Scanner scan = new Scanner(file)) {
