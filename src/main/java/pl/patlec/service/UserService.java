@@ -98,9 +98,9 @@ public class UserService {
 
         User user = userRepository.findByEmail(receiverEmail);
 
-        //String link = "http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/register/" + user.getId() + "/" + user.getRegistrationToken();
+        String link = "pleczycki.pl/planthemeal/register/" + user.getId() + "/" + user.getRegistrationToken();
 
-        String link = "http://localhost:8080/register/" + user.getId() + "/" + user.getRegistrationToken();
+        //String link = "http://localhost:8080/register/" + user.getId() + "/" + user.getRegistrationToken();
 
 
         String message= "<html lang=\"en\">" +
@@ -108,7 +108,7 @@ public class UserService {
                 "<title>Confirm registration</title>" +
                 "</head>" +
                 "<body>" +
-                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/\">PlanTheMeal</a></h1></div>" +
+                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"pleczycki.pl/planthemeal/\">PlanTheMeal</a></h1></div>" +
                 "<p style=\"text-align: center\">Thank you for registering on our site. Please click link below to confirm registration process:</p>" +
                 "<p style=\"text-align: center\"><a style=\"color: #2c7021; text-decoration: none; font-size: 30px\" href=\"" + link + "\" target=\"_blank\">Confirm registration</a></p>" +
                 "<p style=\"margin-top: 50px; text-align: center\">If you didn't register on our site, ignore this e-mail and make sure your data is safe.</p>" +
@@ -121,9 +121,9 @@ public class UserService {
 
         User user = userRepository.findByEmail(receiverEmail);
 
-        //String link = "http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
+        String link = "pleczycki.pl/planthemeal/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
 
-        String link = "http://localhost:8080/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
+        //String link = "http://localhost:8080/lostpassword/" + user.getId() + "/" + user.getPassRecoveryToken();
 
 
 
@@ -132,7 +132,7 @@ public class UserService {
                 "<title>Password recovery</title>" +
                 "</head>" +
                 "<body>" +
-                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"http://77.55.213.198:8080/AlbumManager-1.0-SNAPSHOT/\">PlanTheMeal</a></h1></div>" +
+                "<div style=\"background-color: #f9c910; text-align: center\"><h1><a href=\"pleczycki.pl/planthemeal/\">PlanTheMeal</a></h1></div>" +
                 "<p style=\"text-align: center\">You have received this e-mail because your e-mail address was given during password retrieval process. To retrieve your password click here:</p>" +
                 "<p style=\"text-align: center\"><a style=\"color: #2c7021; text-decoration: none; font-size: 30px\" href=\"" + link + "\" target=\"_blank\">Retrieve password</a></p>" +
                 "<p style=\"margin-top: 50px; text-align: center\">If you didn't lost your password, ignore this e-mail and make sure your data is safe.</p>" + "</body></html>";
