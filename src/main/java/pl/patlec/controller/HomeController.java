@@ -4,19 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import pl.patlec.model.Prompt;
 import pl.patlec.service.PlanService;
 import pl.patlec.service.RecipeService;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/")
 public class HomeController {
 
     private final RecipeService recipeService;
     private final PlanService planService;
     private final Prompt prompt;
 
-    @GetMapping("/")
+    @GetMapping
     public String home(Model model){
 
         model.addAttribute("plans", planService.all().size());
