@@ -58,7 +58,7 @@ public class AdminController {
             } else request.setAttribute("ownRole", "You can't change your own role.");
         }
 
-        // TODO: dać obsługę nieistniejącego usera
+        // TODO: handle non-existing user
 
         return "redirect:/admin/users";
     }
