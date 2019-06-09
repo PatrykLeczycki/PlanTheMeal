@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl extends User implements UserDetails {
 
-    //Zamieniam usera na obiekt UserDetails
     public UserDetailsImpl(User user) {
         this.setEnabled(user.isEnabled());
         this.setPassword(user.getPassword());
